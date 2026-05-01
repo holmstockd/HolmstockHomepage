@@ -3,6 +3,11 @@
 A self-hosted, fully customizable PHP/HTML browser homepage — no Node.js, no build step, no Composer.  
 Drop it on any PHP server and open it in your browser.
 
+
+
+<img width="1677" height="1198" alt="image" src="https://github.com/user-attachments/assets/7e9c662b-d130-42c2-90fd-b2aff075f9be" />
+
+
 ---
 
 ## Features at a Glance
