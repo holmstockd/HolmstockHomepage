@@ -1,0 +1,78 @@
+[
+  {
+    "id": "sec-search",
+    "title": "Search",
+    "icon": "🔍",
+    "pos_x": 10,
+    "pos_y": 10,
+    "locked": false,
+    "view": "list",
+    "cards": [
+      {"icon": "🔍", "label": "Google", "url": "https://google.com"},
+      {"icon": "🦆", "label": "DuckDuckGo", "url": "https://duckduckgo.com"},
+      {"icon": "🧠", "label": "Claude AI", "url": "https://claude.ai"},
+      {"icon": "🤖", "label": "ChatGPT", "url": "https://chatgpt.com"}
+    ]
+  },
+  {
+    "id": "sec-social",
+    "title": "Social",
+    "icon": "📱",
+    "pos_x": 280,
+    "pos_y": 10,
+    "locked": false,
+    "view": "list",
+    "cards": [
+      {"icon": "🐦", "label": "X / Twitter", "url": "https://x.com"},
+      {"icon": "📘", "label": "Facebook", "url": "https://facebook.com"},
+      {"icon": "📷", "label": "Instagram", "url": "https://instagram.com"},
+      {"icon": "📡", "label": "Reddit", "url": "https://reddit.com"},
+      {"icon": "📺", "label": "YouTube", "url": "https://youtube.com"}
+    ]
+  },
+  {
+    "id": "sec-work",
+    "title": "Work",
+    "icon": "💼",
+    "pos_x": 550,
+    "pos_y": 10,
+    "locked": false,
+    "view": "list",
+    "cards": [
+      {"icon": "📧", "label": "Gmail", "url": "https://mail.google.com"},
+      {"icon": "📅", "label": "Calendar", "url": "https://calendar.google.com"},
+      {"icon": "📝", "label": "Google Docs", "url": "https://docs.google.com"},
+      {"icon": "💬", "label": "Slack", "url": "https://slack.com"}
+    ]
+  },
+  {
+    "id": "sec-dev",
+    "title": "Development",
+    "icon": "🛠",
+    "pos_x": 10,
+    "pos_y": 230,
+    "locked": false,
+    "view": "list",
+    "cards": [
+      {"icon": "🐙", "label": "GitHub", "url": "https://github.com"},
+      {"icon": "🌩", "label": "Cloudflare", "url": "https://dash.cloudflare.com"},
+      {"icon": "🐳", "label": "Docker Hub", "url": "https://hub.docker.com"},
+      {"icon": "🛠", "label": "Stack Overflow", "url": "https://stackoverflow.com"}
+    ]
+  },
+  {
+    "id": "sec-media",
+    "title": "Media",
+    "icon": "🎬",
+    "pos_x": 280,
+    "pos_y": 230,
+    "locked": false,
+    "view": "list",
+    "cards": [
+      {"icon": "🎬", "label": "Netflix", "url": "https://netflix.com"},
+      {"icon": "🟣", "label": "Twitch", "url": "https://twitch.tv"},
+      {"icon": "🎵", "label": "Spotify", "url": "https://open.spotify.com"},
+      {"icon": "📺", "label": "YouTube", "url": "https://youtube.com"}
+    ]
+  }
+]
