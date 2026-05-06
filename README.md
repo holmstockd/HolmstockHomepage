@@ -1,11 +1,11 @@
-# Server Homepage Dashboard — v1.6 (Build Plan v1.3)
+# Server Homepage Dashboard — v1.4.3 (Build Plan v1.4.3)
 
 A self-hosted, fully customizable PHP/HTML browser homepage — no Node.js, no build step, no Composer.  
 Drop it on any PHP server and open it in your browser.
 
 ---
 
-## What's New in v1.6 (Build Plan v1.3)
+## What's New in v1.4.3 (Build Plan v1.3)
 
 | # | Feature | Status |
 |---|---|---|
@@ -26,7 +26,7 @@ Drop it on any PHP server and open it in your browser.
 
 ---
 
-## What's New in v1.5
+## What's New in v1.3.9
 
 | # | Feature | Summary |
 |---|---|---|
@@ -41,7 +41,7 @@ Drop it on any PHP server and open it in your browser.
 
 ---
 
-## What's New in v1.4
+## What's New in v1.3.5
 
 | # | Feature | Summary |
 |---|---|---|
