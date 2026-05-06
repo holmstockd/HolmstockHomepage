@@ -5,6 +5,8 @@ Drop it on any PHP server and open it in your browser.
 
 <img width="1665" height="1573" alt="image" src="https://github.com/user-attachments/assets/93eac24c-b255-46c5-95eb-212af8408c97" />
 
+
+Stil minor bugs if you can find them and help me solve it - that would be appreciated. 
 ---
 
 ## What's New in v1.4.3 (Build Plan v1.3)
