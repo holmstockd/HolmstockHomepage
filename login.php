@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/auth.php';  // dashAuthToken(), dashCookieOpts()
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 /* ── First-run: redirect to setup wizard ────────────────────────────── */
@@ -66,14 +67,14 @@ define('LOGIN_DAYS', 180); // 6 months
 if (isset($_COOKIE[LOGIN_COOKIE])) {
     $token = $_COOKIE[LOGIN_COOKIE];
     // Admin cookie
-    $expected = hash('sha256', $username . ($_SERVER['HTTP_USER_AGENT'] ?? '') . 'dash_secret_salt_2024');
+    $expected = dashAuthToken($username);
     if (hash_equals($expected, $token)) {
         $_SESSION['logged_in'] = true;
         header('Location: index.php'); exit;
     }
     // Sub-user cookie
     foreach (getSubUsersLogin() as $su) {
-        $exp = hash('sha256', $su['username'] . ($_SERVER['HTTP_USER_AGENT'] ?? '') . 'dash_secret_salt_2024');
+        $exp = dashAuthToken($su['username']);
         if (hash_equals($exp, $token)) {
             $_SESSION['logged_in'] = true;
             $_SESSION['sub_user']  = $su['username'];
@@ -91,16 +92,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Admin check
     $ok = ($user === $username) && $pwhash && password_verify($pass, $pwhash);
     if ($ok) {
-        $token = hash('sha256', $username . ($_SERVER['HTTP_USER_AGENT'] ?? '') . 'dash_secret_salt_2024');
-        setcookie(LOGIN_COOKIE, $token, time() + (LOGIN_DAYS * 86400), '/', '', false, true);
+        $token = dashAuthToken($username);
+        setcookie(LOGIN_COOKIE, $token, dashCookieOpts(time() + (LOGIN_DAYS * 86400)));
         $_SESSION['logged_in'] = true;
         header('Location: index.php'); exit;
     }
     // Sub-user check — MySQL-first via verifySubUserLogin()
     $su = verifySubUserLogin($user, $pass);
     if ($su) {
-        $token = hash('sha256', $su['username'] . ($_SERVER['HTTP_USER_AGENT'] ?? '') . 'dash_secret_salt_2024');
-        setcookie(LOGIN_COOKIE, $token, time() + (LOGIN_DAYS * 86400), '/', '', false, true);
+        // Token must be minted for the SUB-USER, not the admin, or the
+        // remember-me cookie would restore this session as administrator.
+        $token = dashAuthToken($su['username']);
+        setcookie(LOGIN_COOKIE, $token, dashCookieOpts(time() + (LOGIN_DAYS * 86400)));
         $_SESSION['logged_in'] = true;
         $_SESSION['sub_user']  = $su['username'];
         $_SESSION['sub_role']  = ($su['role'] ?: 'user');

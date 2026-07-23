@@ -12,7 +12,10 @@ $user = getCurrentUsername();
 
 $updateUrl = trim(dashGetSetting($db, $user, 'update_url', ''));
 if (!$updateUrl) {
-    $updateUrl = 'https://dash.danielholmstock.com/updateusers/version.json';
+    // No default update server. Set your own in Settings -> Update if you
+    // host a version.json somewhere; otherwise update checks stay disabled.
+    echo json_encode(['ok'=>false,'error'=>'No update URL configured. Set one in Settings \u2192 Update.']);
+    exit;
 }
 // Normalise: must end with version.json
 if (!str_ends_with(strtolower(parse_url($updateUrl, PHP_URL_PATH) ?? ''), 'version.json')) {

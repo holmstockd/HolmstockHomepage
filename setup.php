@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__.'/presets.php';
+require_once __DIR__.'/auth.php';  // dashAuthToken(), dashCookieOpts()
 
 function alreadyConfigured() {
     $f = __DIR__.'/dash_config.php';
@@ -30,7 +31,7 @@ if (alreadyConfigured() && isset($_GET['action'])) {
         $_cfgRaw = @file_get_contents(__DIR__ . '/dash_config.php') ?: '';
         preg_match("/define\('DASH_USERNAME',\s*'([^']+)'\)/", $_cfgRaw, $_um);
         $_cfgUser = $_um[1] ?? 'admin';
-        $_expected = hash('sha256', $_cfgUser . ($_SERVER['HTTP_USER_AGENT'] ?? '') . 'dash_secret_salt_2024');
+        $_expected = dashAuthToken($_cfgUser);
         if (isset($_COOKIE['dash_auth']) && hash_equals($_expected, $_COOKIE['dash_auth'])) {
             $_setupAuthed = true;
         }

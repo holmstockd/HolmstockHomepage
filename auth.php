@@ -4,6 +4,62 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 define('COOKIE_NAME', 'dash_auth');
 define('COOKIE_DAYS', 60);
 
+/**
+ * Per-install secret used to sign the "remember me" token.
+ *
+ * Generated once on first use and stored in dash_secret.php, which is
+ * gitignored and must never be committed or shared. If the file cannot be
+ * written the secret is derived from the admin password hash instead, so a
+ * read-only install still gets an install-specific value rather than a
+ * constant shared by every copy of this software.
+ */
+function dashAuthSecret(): string {
+    static $cached = null;
+    if ($cached !== null) return $cached;
+
+    $f = __DIR__ . '/dash_secret.php';
+    if (is_file($f)) {
+        $v = @include $f;
+        if (is_string($v) && strlen($v) >= 32) return $cached = $v;
+    }
+
+    try {
+        $secret = bin2hex(random_bytes(32));
+    } catch (Throwable $e) {
+        $secret = hash('sha256', uniqid('', true) . microtime(true) . __DIR__);
+    }
+
+    $written = @file_put_contents(
+        $f,
+        "<?php\n// Auto-generated. Unique to this installation. Do not commit or share.\n"
+        . "return " . var_export($secret, true) . ";\n",
+        LOCK_EX
+    );
+    if ($written !== false) { @chmod($f, 0600); return $cached = $secret; }
+
+    // Could not persist - derive something install-specific instead.
+    $cfg = getDashConfig();
+    return $cached = hash('sha256', ($cfg['password_hash'] ?? '') . __DIR__);
+}
+
+/** Build the remember-me token for a username. */
+function dashAuthToken(string $username): string {
+    return hash_hmac('sha256', $username . '|' . ($_SERVER['HTTP_USER_AGENT'] ?? ''), dashAuthSecret());
+}
+
+/** Cookie flags: HTTPS-only when available, never readable from JavaScript. */
+function dashCookieOpts(int $expires): array {
+    $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+          || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
+    return [
+        'expires'  => $expires,
+        'path'     => '/',
+        'secure'   => $https,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ];
+}
+
 function getDashConfig() {
     $cfg = ['username' => 'admin', 'password_hash' => '', 'title' => 'Server Dashboard', 'grid_cols' => 3];
     $f = __DIR__ . '/dash_config.php';
@@ -74,7 +130,7 @@ function getSubUserByCredentials(string $username, string $password): ?array {
 // Restore sub-user from remember-me cookie
 function restoreSubUserFromCookie(string $token): bool {
     foreach (getSubUsers() as $u) {
-        $expected = hash('sha256', $u['username'] . ($_SERVER['HTTP_USER_AGENT'] ?? '') . 'dash_secret_salt_2024');
+        $expected = dashAuthToken($u['username']);
         if (hash_equals($expected, $token)) {
             $_SESSION['logged_in'] = true;
             $_SESSION['sub_user']  = $u['username'];
@@ -101,7 +157,8 @@ function getCurrentRole(): string {
         return ($r === 'readonly') ? 'readonly' : 'user';
     }
     if (!empty($_SESSION['logged_in'])) return 'admin';
-    return 'admin';
+    // Fail closed: an anonymous request is never an admin.
+    return 'readonly';
 }
 
 function isAdmin(): bool {
@@ -113,7 +170,7 @@ function isLoggedIn(): bool {
     if (isset($_COOKIE[COOKIE_NAME])) {
         $token = $_COOKIE[COOKIE_NAME];
         $cfg   = getDashConfig();
-        $expected = hash('sha256', $cfg['username'] . ($_SERVER['HTTP_USER_AGENT'] ?? '') . 'dash_secret_salt_2024');
+        $expected = dashAuthToken($cfg['username']);
         if (hash_equals($expected, $token)) {
             $_SESSION['logged_in'] = true;
             // Trigger auto-migration silently on first login after upgrade
@@ -170,7 +227,7 @@ if (!isConfigured()) {
 
 // Handle logout
 if (isset($_GET['logout'])) {
-    setcookie(COOKIE_NAME, '', time() - 3600, '/');
+    setcookie(COOKIE_NAME, '', dashCookieOpts(time() - 3600));
     session_destroy();
     _authRedirect('login.php');
 }

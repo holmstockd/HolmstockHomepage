@@ -1,104 +1,130 @@
-# Server Homepage Dashboard — v1.4.3 (Build Plan v1.4.3)
+# Server Homepage Dashboard
 
-A self-hosted, fully customizable PHP/HTML browser homepage — no Node.js, no build step, no Composer.  
-Drop it on any PHP server and open it in your browser.
+A self-hosted browser homepage for your server. Drop it on any PHP host — no
+Node, no build step, no Composer. Link columns, live disk and CPU stats,
+floating widgets, and 80 animated themes.
 
-<img width="1665" height="1573" alt="image" src="https://github.com/user-attachments/assets/93eac24c-b255-46c5-95eb-212af8408c97" />
+![PHP](https://img.shields.io/badge/PHP-8.0%2B-777bb4)
+![License](https://img.shields.io/badge/license-MIT-green)
+![No build step](https://img.shields.io/badge/build-none%20required-brightgreen)
 
-
-Stil minor bugs if you can find them and help me solve it - that would be appreciated. 
----
-
-## What's New in v1.4.3 (Build Plan v1.3)
-
-| # | Feature | Status |
-|---|---|---|
-| T001 | **Folder widget isolation** | Each page-folder is bound to a unique `dir_key`; opening one never leaks another folder's files |
-| T002 | **Widget position + size persistence** | Width and height saved alongside x/y in `stat_pos_json`; all widget types restore size on reload |
-| T003 | **Profile auto-save** | Theme/wallpaper/size/positions continuously written back to the active profile (debounced 1.2 s) |
-| T004 | **Links independent of profiles** | Profile save/load never touches `dash_links.json` or the links table |
-| T005 | **Size slider per profile** | Zoom level stored in profile record and restored on profile load |
-| T006 | **Hide/show columns** | × on section headers hides them; Options → Widgets lists all hidden columns with restore buttons |
-| T007 | **Camera widget** | iframe/MJPEG/video stream widget with optional record-trigger button |
-| T008 | **Google Calendar embed** | Multi-calendar embed with configurable timezone and "+ New Event" deep-link |
-| T009 | **Widget resize + font scaling** | Width slider scales inner content font-size proportionally; camera/calendar excluded (iframe layout) |
-| T010 | **Embed compatibility** | No X-Frame-Options or restrictive CSP; HTML widget `<script>` tags re-executed via `_execWidgetScripts` |
-| — | **6–9 animated wallpapers per theme** | 10 new global CSS animations: aurora, nebula, matrix, lava, grid, waves, diamonds, stripes, starfield, plasma |
-| — | **Curated era-accurate wallpaper variants** | Win 9x/98/2K/XP get teal/brick/sandstone/metal options only; Palm OS gets stripes/grid/diamonds; retro themes get matrix/navy/circles/bricks/stripes — no aurora/nebula/plasma anachronisms |
-| — | **Android 4 Nexus Live as default** | Jelly Bean now defaults to the Nexus particle-network canvas; Circuit Board is the variant |
-| — | **setup.php UX** | Custom dark dropdown, password show/hide toggle, `db_type` defaults to `none` |
+> **Heads up:** this is designed for a machine you control — a home server, a
+> VPS, a LAN box. Read [SECURITY.md](SECURITY.md) before exposing it to the
+> open internet.
 
 ---
 
-## What's New in v1.3.9
+## Quick Install
 
-| # | Feature | Summary |
-|---|---|---|
-| 1 | **Machine UUID profiles** | Server-side 10-year cookie gives each device a unique UUID. Last-used theme, variant, and size are recalled automatically per device — two browsers, two different themes |
-| 2 | **Animated OS-accurate folder windows** | Folder windows open with a scale+fade animation (CSS keyframe). The titlebar shows the folder name. Windows are freely draggable by the titlebar — just grab and move |
-| 3 | **Per-theme window chrome** | All 25+ themes now have OS-accurate window chrome: Amiga (orange titlebar, close gadget), NeXTSTEP (dark gray, minimal), BeOS (golden gradient, round buttons), Norton (blue/yellow monospace), Atari ST (blue PM-style), IRIX (teal SGI), C64 (medium blue), OS/2 (Presentation Manager), Palm OS, WebOS, macOS (traffic lights), macOS 9 (pinstripe), Ubuntu (purple/orange), Jelly Bean, Win98/2K/XP |
-| 4 | **ZIP drop upgrader** | Settings → Update: upload a ZIP or provide a download URL. SHA-256 is verified before extraction. Protected files (dash_config.php, uploads/) are never overwritten. SQL migrations in `migrations/` run automatically |
-| 5 | **Update URL checker** | Configurable `version.json` URL. One click to check for updates — shows version, changelog, and a "Download & Apply" button. Auto-reloads on success |
-| 6 | **Full export/import backup** | `export_data.php` downloads a ZIP with all settings, widgets, links, profiles, custom backgrounds, and uploads. `import_data.php` restores from that ZIP |
-| 7 | **Settings → Machines tab** | Lists all registered devices with UUID, name, last-used theme, and last-seen timestamp. Rename or delete any machine profile |
-| 8 | **Settings → Update tab** | Central update hub: check for updates, upload ZIP, download from URL, configure update source, export backup, import backup — all in one place |
+**Requirements:** PHP 8.0+, Apache or Nginx. MySQL/MariaDB optional (falls back to JSON files).
+
+```bash
+# 1. Copy the dashboard onto your web root
+sudo cp -r php-dashboard /var/www/html/dash
+
+# 2. Let the web server own it (Debian/Ubuntu uses www-data)
+sudo chown -R www-data:www-data /var/www/html/dash
+
+# 3. Make sure PHP can write its config + data files
+sudo chmod -R 755 /var/www/html/dash
+```
+
+Then open `http://your-server/dash/` in a browser. The setup wizard runs automatically:
+
+1. **Account** — create the admin username and password
+2. **Links** — add your first columns and links
+3. **Drives** — add disks to monitor (validated with `df -h`)
+4. **Database** — MySQL/MariaDB, or leave as `none` to use JSON files
+5. **Theme** — pick a starting theme
+6. **Done** — you're redirected to the dashboard
+
+> **Note:** the wizard writes `dash_config.php`. If PHP can't write to the directory, setup will fail —
+> check ownership and permissions above.
+
+### Docker / other web roots
+
+Point your vhost `DocumentRoot` at the `php-dashboard` directory. No rewrite rules are required;
+the bundled `.htaccess` only sets cache headers and blocks direct access to `dash_*.json`.
 
 ---
 
-## What's New in v1.3.5
+## Settings
 
-| # | Feature | Summary |
-|---|---|---|
-| 1 | **6 New Retro OS Themes** | Amiga Workbench, NeXTSTEP, BeOS, DOS/Norton Commander, Atari ST/TOS, IRIX/SGI — full CSS vars, wallpaper styles, and titlebars |
-| 2 | **Sticky Notes** | Draggable, resizable 📌 sticky notes directly on your dashboard — auto-save as you type, 4 colors, persist in MySQL |
-| 3 | **Countdown Timer widgets** | Live ⏳ countdown to any date/time — add via Options → Widgets, appears as a floating panel |
-| 4 | **CRT Overlay** | 📺 button in the toolbar toggles a retro phosphor scanline + vignette overlay over the whole dashboard |
-| 5 | **Theme startup sounds** | Each retro theme plays its own synthesized chime when selected (Web Audio API, no files) — toggle in Options |
-| 6 | **RSS widget width persistence** | RSS widget now saves and restores width (and height) alongside position, just like all other widgets |
-| 7 | **Requirements checker** | `/requirements.php` — full server readiness check: PHP 8+, extensions, MySQL, writable dirs, web server detection |
-| 8 | **Hidden column restore** | Options → Widgets shows all hidden columns with one-click restore buttons |
+Settings are grouped into five areas:
 
----
-
-## What's New in v1.3
-
-| # | Feature | Summary |
-|---|---|---|
-| 1 | **Folder widget isolation** | Each page-folder widget (📁 icon on dashboard) opens its own isolated file panel — no cross-contamination between folders |
-| 2 | **Widget size persistence** | Width **and** height saved for every floating widget (stat, HTML, RSS, camera, calendar); restored on page load |
-| 3 | **Profile auto-save** | Active profile is continuously written back whenever theme, wallpaper, size, or widget positions change — no manual save needed |
-| 4 | **Links independent of profiles** | Profile switch/load never overwrites your link columns; links are always separate |
-| 5 | **Size slider per profile** | Each saved profile stores its own zoom level; restored when the profile is loaded |
-| 6 | **Hide / restore columns** | × button on each column header (visible in Edit mode) hides it; restore from **Options → Widgets → Hidden Columns** |
-| 7 | **Camera widget** | Embed any IP camera MJPEG stream or NVR iframe (Scrypted, Frigate, BlueIris) as a draggable floating panel with optional ⏺ record trigger |
-| 8 | **Google Calendar widget** | Embed up to 5 Google Calendars in one draggable widget with + New Event deep-link |
-| 9 | **Widget resize with font scaling** | SE-corner drag now resizes both width and height; font size scales proportionally |
-| 10 | **Embed compatibility** | No X-Frame-Options or restrictive CSP headers; `<script>` tags in HTML widget content are re-executed correctly |
-
-### v1.3 Post-release fixes
-
-| Fix | What changed |
+| Group | What's in it |
 |---|---|
-| **Document folder panel — create & delete restored** | Added 🗑 delete button to each folder (hover to reveal); fixed sidebar hiding entirely when opening a widget-scoped folder so the New Folder row can no longer be reached in a broken state |
-| **Google Calendar setup — completely reworked UX** | Added a numbered 5-step guide directly in the form (make public → find Calendar ID → paste); added a **"Paste share link → Extract ID"** helper that automatically pulls the `src=` calendar ID out of any Google Calendar share or embed URL and appends it to the ID field — no manual digging needed |
-| **Folder selection race condition fixed** | `selectDocFolder()` now pins `_docCurrentFolder` before the async server reload so files always display for the clicked folder, not for whatever folder the reload resolves to |
-| **Delete folder actually deletes** | `delete_folder` in `download.php` was matching on `id` but the JS was sending `folder` (the dir_key); fixed to use the same dir resolution as the `list` action (`$f['dir']` → `$f['path']` fallback); also now physically removes the directory and all its files from disk |
-| **Old folders auto-migrated to unique `dir` keys** | `loadFolders()` now assigns a guaranteed-unique `dir` field to any legacy folder that was saved without one, eliminating the root cause of multiple folders resolving to the same physical directory |
-| **`loadDocFolders` stays on current folder after reload** | After upload, delete, or folder creation, the panel no longer jumps back to the first folder if the current folder still exists |
-| **Deleted folder directories no longer reappear** | Root cause: `folderPath()` was auto-creating the directory on every `list` call, so deleting a folder's directory was immediately undone by the next refresh. Fixed by adding a `$create` flag — only `add_folder` and `upload` actions create directories; `list`, `get`, and `delete` never do |
-| **"Delete All" button actually deletes files** | `deleteAllDocFiles` was sending `action` in the POST body, but PHP reads it from `$_GET` — so every "Delete All" silently did a `list` instead. Fixed to put `action` in the URL query string |
-| **Deleted folders no longer reappear as "Documents"** | `loadFolders()` was auto-recreating a default "Documents" folder whenever JSON was empty, so deleting all folders caused them to snap back immediately. Now returns an empty list and shows a "Create a folder to get started" message instead |
-| **`download.php` fully rewritten — no JSON config** | Root cause of all folder bugs: a central JSON mapping file that could get out of sync with the filesystem. Completely removed. Each folder is now a plain subdirectory of the user's upload directory; the folder's label and icon are stored in `_meta.json` inside that subdirectory. The directory name itself is the unique ID (e.g. `fd_1746123456_a3f2b1`). Two folders sharing a directory is now physically impossible. No config to corrupt, no migrations, no mapping table. |
-| **`upgrade.php` — MySQL detection now tests a real connection** | Previously the page checked only whether `dash_config.php` contained `DASH_DB_TYPE = 'mysql'`. If you dropped or recreated the database, it still showed "✅ MySQL Already Connected". Now upgrade.php actually opens a PDO connection and runs `SELECT 1`. If it fails, a yellow warning card shows the exact PDO error and presents a pre-filled re-entry form so you can reconnect without editing any files. |
-| **Folder widget panel — never shows stale content** | Root cause: `openPageFolder()` called `loadDocFolders()` asynchronously before wiping the display. If the fetch was slow, the panel showed whatever files it last rendered. Rewritten to clear content synchronously before any async work. If a widget has no folder ID (broken widget), it now shows a red error with a link to `diag.php` instead of silently showing old files. |
-| **`addPageFolder()` — fails visibly on server error** | Previously, if `download.php` returned a PHP error or non-JSON response, the fetch silently threw, `dirKey` stayed empty, and the widget was created with no ID — guaranteed to show stale content on open. Now alerts the user and aborts the widget creation entirely if no valid folder ID is returned from the server. |
-| **Upload and delete refresh in locked-folder mode** | After uploading or deleting a file in a widget-locked folder panel, the code was calling `loadDocFolders()` (fetches all folders, rebuilds sidebar). In locked mode the sidebar is hidden and only one folder matters. Fixed to call `renderDocFiles(dirKey)` directly — faster, and prevents the sidebar from flashing in. |
-| **Diagnostic page added (`diag.php`)** | Auth-gated debug page showing PHP version, MySQL connection status, and a table of every doc folder (filesystem dir, file count, MySQL record, widget dir_key). Includes a "Wipe All Doc Folder Data" button for a clean slate and a link from the dashboard version badge. |
-| **`download.php` — `add_folder` never fired via POST** | Root cause: `$action = $_GET['action'] ?? 'list'` only read query-string params. JS `addPageFolder()` sends `action=add_folder` in the POST body via FormData, so `$action` always resolved to `list`, returned `{ok:true,folders:[...]}` without a `dir` key, and the UI showed "Folder creation failed — server returned no folder ID." Fixed to `$_GET['action'] ?? $_POST['action'] ?? 'list'`. |
-| **4 off-theme seasonal themes removed** | Halloween, Valentine's Day, New Year, and Easter themes removed from the theme selector and all CSS/JS/variant tables. Remaining seasonal themes (Spring, Summer, Autumn, Winter, Thanksgiving, July 4th, Christmas) are unaffected. |
-| **Android 4 / Jelly Bean — canvas swap** | Nexus Live particle network is now the **default** canvas; Circuit Board moves to the second variant slot. VARIANTS table updated to match. |
-| **Palm V and Palm Pilot theme-switch bug** | `theme-palmv` and `theme-palmpilot` were missing from the `themeClasses` strip-list, so switching away from those themes left the class on `<body>`. Both keys also added to the JS `valid` array. |
-| **Wallpaper variants blocked by screensaver canvas** | Screensaver canvases (z-index 0) painted over `#wallpaper` when a `w-*` static variant was selected. Added `stopAllCanvases()` called from `onVariantChange()` whenever a wallpaper-class variant is chosen. |
+| **Appearance** | General options, theme visibility, and the custom theme builder |
+| **Content** | Link columns, floating widgets, and document folders/uploads |
+| **Server** | Drive monitoring, MySQL connection, and updates (admin only) |
+| **Sharing** | Share columns and widgets with other users; export and import |
+| **Account** | Password, user management, device registration, changelog |
+
+To add a background to a theme, go to **Appearance → Themes**, click **Edit** on
+any theme, then upload an image or video. Each theme can hold several, selectable
+from the second dropdown on the dashboard.
+
+To add a widget, go to **Content → Widgets** and pick a type from the row of
+buttons at the top.
+
+---
+
+## Updating
+
+Two supported paths:
+
+**In-app (recommended)** — Settings → Update → *Upload ZIP*, choose the release zip, apply.
+User data is preserved automatically: `dash_config.php`, every `dash_*.json`, and the
+`uploads/` and `zips/` directories are never overwritten.
+
+**Manual** — unzip over the install directory:
+```bash
+sudo unzip -o dash-update-1.7.zip -d /var/www/html/
+sudo chown -R www-data:www-data /var/www/html/dash
+```
+
+Always take a backup first: Settings → Update → *Export backup*.
+
+---
+
+## Themes
+
+80 themes, grouped in the dropdown:
+
+| Group | Themes |
+|---|---|
+| **Microsoft** | Windows 3.1, 9x Retro, 2000, XP, Vista, 7, 10, 11, Windows Phone, Pocket PC 6 |
+| **Apple** | Mac OS 9, Mac OS 9 Retro, Mac OS X Aqua, Mac OS X Retro, Tiger, macOS, iOS 26, iPad |
+| **Palm & Mobile** | Palm OS, Palm V/Vx, Palm Pilot, Palm Treo, webOS, Android 4 |
+| **BlackBerry** | BlackBerry 10, BlackBerry Bold |
+| **Linux & Unix** | Ubuntu, Linux Mint, IRIX/SGI, Solaris |
+| **Retro Computing** | Commodore 64, Amiga Workbench, Atari ST, NeXTSTEP, BeOS, OS/2 Warp, Norton Commander |
+| **Seasons** | Spring, Summer, Autumn, Winter |
+| **Holidays** | Memorial Day, July 4th, Thanksgiving, Christmas |
+| **Technology Eras** | 80s, 90s, 2000s, 2010s, 2020s Technology, Pager |
+| **Processors** | Intel, AMD, IBM POWER, PowerPC, VIA, ARM |
+| **Months** | January through December — a distinct scene for each |
+| **Music & TV** | 80s TV, 80s Music, 90s TV, 90s Music, 2000s TV, 2000s Music, 2010s TV, 2010s Music |
+| **Era & Style** | 80s TV, 90s Music, Hatsune Miku, Professional, Cute |
+
+Every theme has an animated canvas background plus additional wallpaper variants in the
+second dropdown. Themes you don't want can be hidden in Settings → Themes.
+
+---
+
+## Changelog
+
+Full history is in the dashboard itself under **Settings → Changelog**, and in
+[GitHub Releases](../../releases).
+
+Recent highlights:
+
+- **1.5.6** — Security: per-install cookie signing secret; sub-user privilege fix
+- **1.5.5** — Settings reorganised into five groups; every tab documented
+- **1.5.4** — 12 month themes, 8 music/TV decade themes, Memorial Day
+- **1.5.3** — Technology era and processor themes
+- **1.5.2** — Live OS desktop wallpapers
+- **1.5.1** — Windows 3.1 / 11, BlackBerry, Palm Treo themes
 
 ---
 
@@ -128,26 +154,6 @@ Stil minor bugs if you can find them and help me solve it - that would be apprec
 | **SQLite or MySQL** | Choose your storage backend during setup |
 | **Setup Wizard** | 6-step guided setup: account → links → monitoring → database → theme → done |
 | **ZIP Distribution** | `zips/dash.zip` (clean install) and `zips/github.zip` (full snapshot) |
-
----
-
-## Quick Install
-
-1. **Copy** the `php-dashboard/` folder to your web server root, e.g.:
-   ```
-   /var/www/html/dash/
-   ```
-2. **Make it writable** by the web server:
-   ```bash
-   chown -R www-data:www-data /var/www/html/dash
-   chmod -R 755 /var/www/html/dash
-   ```
-3. **Visit** `http://yourserver/dash/setup.php` in your browser.
-4. **Follow the 6-step wizard** (see below).
-5. **Log in** at `index.php`.
-
-**Requirements:** PHP 8.0+ with `json`, `sqlite3` (or `pdo_mysql`), `fileinfo` extensions.  
-Works on Apache, Nginx + PHP-FPM, LiteSpeed, or a Raspberry Pi running Apache.
 
 ---
 
@@ -377,16 +383,6 @@ php-dashboard/
     ├── dash.zip            Clean install archive (no data files)
     └── github.zip          Full snapshot (includes all state files)
 ```
-
----
-
-## Updating
-
-1. Back up `dash_config.php`, `dash_links.json`, `dash_state.json`, `uploads/`, and any `dash_*.json` files.
-2. Replace all `.php` files with the new version.
-3. Your data files are preserved.
-
-If the setup wizard re-appears after an update, your `dash_config.php` may have been overwritten — restore from backup or re-run the wizard (your `dash_links.json` and other data files are unchanged).
 
 ---
 

@@ -102,7 +102,7 @@ try {
 
     // ── 5. Copy files (skip protected) ────────────────────────────────────
     $protectedFiles = [
-        'dash_config.php','dash_users.json','dash_links.json','dash_settings.json',
+        'dash_config.php','dash_secret.php','dash_users.json','dash_links.json','dash_settings.json',
         'dash_monitor.json','dash_drives.json','dash_state.json','dash_profiles.json',
         'dash_custom_bgs.json',
         // v1.3+ user-data files — never overwrite on upgrade
@@ -122,7 +122,12 @@ try {
     foreach ($iter as $item) {
         $rel  = str_replace('\\', '/', substr($item->getPathname(), strlen($srcRoot) + 1));
         $top  = explode('/', $rel)[0];
-        if (in_array($rel, $protectedFiles) || in_array($top, $protectedDirs)) { $skipped++; continue; }
+        // Per-device and per-user state files are named with a suffix, so match by prefix.
+        $isPerDevice = (strpos($rel, 'dash_machine_state_') === 0)
+                    || (strpos($rel, 'dash_device_profiles_') === 0)
+                    || (strpos($rel, 'dash_links_') === 0)
+                    || (strpos($rel, 'dash_docfolders_') === 0);
+        if (in_array($rel, $protectedFiles) || in_array($top, $protectedDirs) || $isPerDevice) { $skipped++; continue; }
         $dest = $dashRoot . '/' . $rel;
         if ($item->isDir()) { @mkdir($dest, 0755, true); }
         else { if (@copy($item->getPathname(), $dest)) $copied++; else $skipped++; }

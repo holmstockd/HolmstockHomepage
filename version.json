@@ -1,0 +1,8 @@
+{
+  "version": "1.5.7",
+  "released": "2026-07-23",
+  "zip_url": "https://example.com/dashboard/update.zip",
+  "sha256": "",
+  "zip_size": "",
+  "changelog": "v1.5.7 — FIX: 43 of the 80 themes reset to the default on every page load. A hardcoded whitelist left over from v1.3 was still validating the saved theme, and every theme added since then — Windows Vista/7/10/11/3.1, BlackBerry, iPad, Palm Treo, Linux Mint, all twelve month themes, all the Technology, Music & TV and Processor themes, and Memorial Day — failed that check and silently fell back to Windows 9x. This also made per-device theme memory look broken, because the theme was never restored on any device. The list is now generated from the theme registry, so a new theme can never be silently discarded again. FIX: in flat-file mode (no MySQL), the per-device state files that remember each computer's theme, size and wallpaper were not protected during updates and were deleted on upgrade. Per-device state, per-user link files and per-user document folders are now preserved. Each browser on each computer keeps its own theme, wallpaper variant and zoom level; changing the theme on one machine no longer changes it on another. Also includes everything from 1.5.6 (per-install cookie signing secret, sub-user privilege fix)."
+}

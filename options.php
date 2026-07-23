@@ -1442,48 +1442,116 @@ $_all_users_share = array_filter(
 
 // Variant-only themes: accessible via the variant dropdown on the dashboard,
 // not as standalone theme choices. Excluded from Theme Visibility list.
+$theme_group_map = [
+    'Microsoft'       => ['win31','win9x','win2k','winxp','winxp2','vista','win7','win10','win11','winphone','pocketpc'],
+    'Apple'           => ['macos9','mac9','aqua','macosx','osxtiger','macos','ios26','ipad'],
+    'Palm & Mobile'   => ['palmos','palmtreo','palmtreo2','palmv','palmpilot','webos','jellybean','jellybean2'],
+    'BlackBerry'      => ['bb10','bbbold'],
+    'Linux & Unix'    => ['ubuntu','mint','irix','solaris'],
+    'Retro Computing' => ['c64','amiga','atarist','nextstep','beos','os2','norton'],
+    'Seasons'         => ['spring','summer','autumn','winter'],
+    'Holidays'        => ['memorial','july4','thanksgiving','christmas'],
+    'Technology Eras' => ['tech80','tech90','tech00','pager','tech10','tech20'],
+    'Music & TV'      => ['retro80','mus80','tv90','retro90','tv00','mus00','tv10','mus10'],
+    'Months'          => ['m-jan','m-feb','m-mar','m-apr','m-may','m-jun','m-jul','m-aug','m-sep','m-oct','m-nov','m-dec'],
+    'Processors'      => ['intel','amd','ibm','powerpc','via','arm'],
+    'Era & Style'     => ['miku','professional','cute','custom'],
+];
 $theme_variants_only = ['winxp2', 'jellybean2', 'palmtreo'];
 
 $themes = [
-    'win9x'       => '🪟 WIN9X Retro',
-    'win2k'       => '🖥 Win 2000',
-    'winxp'       => '🪟 Win XP',
+    // Microsoft
+    'win31'       => '🖱 Windows 3.1',
+    'win9x'       => '🖥 Windows 9x Retro',
+    'win2k'       => '🖥 Windows 2000',
+    'winxp'       => '🪟 Windows XP',
     'winxp2'      => '🐟 Win XP Aquarium (variant — use XP variant dropdown)',
-    'winphone'    => '📱 Win Phone',
-    'aqua'        => '🍎 OSX Aqua',
+    'vista'       => '🌌 Windows Vista',
+    'win7'        => '💠 Windows 7',
+    'win10'       => '🪟 Windows 10',
+    'win11'       => '🪟 Windows 11',
+    'winphone'    => '📱 Windows Phone',
+    'pocketpc'    => '📲 Pocket PC 6',
+    // Apple
+    'macos9'      => '🌈 Mac OS 9',
+    'mac9'        => '🌈 Mac OS 9 Retro',
+    'aqua'        => '💧 Mac OS X Aqua',
+    'macosx'      => '🍎 Mac OS X Retro',
+    'osxtiger'    => '🐯 Mac OS X Tiger',
+    'macos'       => '🍎 macOS',
     'ios26'       => '✨ iOS 26',
-    'jellybean'   => '🤖 Android 4 (Jelly Bean)',
-    'jellybean2'  => '🤖 Android 4 Nexus (variant — use Jelly Bean variant dropdown)',
+    // Palm & Mobile
     'palmos'      => '📟 Palm OS',
     'palmtreo'    => '📱 Palm Treo (variant — use Palm OS variant dropdown)',
+    'palmtreo2'   => '📱 Palm Treo',
     'palmv'       => '🔳 Palm V / Vx',
     'palmpilot'   => '📟 Palm Pilot',
-    'pocketpc'    => '📲 Pocket PC 6',
-    'macos'       => '🍎 macOS',
-    'macos9'      => '🌈 Mac OS 9',
-    'mac9'        => '🌈 Mac9 Retro',
-    'macosx'      => '🍎 MacOSX Retro',
-    'ubuntu'      => '🟠 Ubuntu',
-    'c64'         => '🕹 Commodore 64',
-    'os2'         => '🗄 OS/2 Warp',
     'webos'       => '🌙 Palm webOS',
-    'osxtiger'    => '🐯 OSX Tiger',
-    'professional'=> '👔 Professional',
-    'cute'       => '🌸 Cute',
+    'jellybean'   => '🤖 Android 4 (Jelly Bean)',
+    'jellybean2'  => '🤖 Android 4 Nexus (variant — use Jelly Bean variant dropdown)',
+    // BlackBerry
+    'bb10'        => '🟦 BlackBerry 10',
+    'bbbold'      => '⌨️ BlackBerry Bold',
+    // Linux & Unix
+    'ubuntu'      => '🟠 Ubuntu',
+    'mint'        => '🌿 Linux Mint',
+    'irix'        => '🌊 IRIX / SGI',
+    'solaris'     => '☀️ Solaris',
+    // Retro Computing
+    'c64'         => '🕹 Commodore 64',
+    'amiga'       => '🖥 Amiga Workbench',
+    'atarist'     => '🕹 Atari ST / TOS',
+    'nextstep'    => '⬛ NeXTSTEP',
+    'beos'        => '🟡 BeOS',
+    'os2'         => '🗄 OS/2 Warp',
+    'norton'      => '💙 DOS / Norton Commander',
+    // Seasons
     'spring'      => '🌷 Spring',
-    'summer'      => '☀️ Summer',
+    'summer'      => '🏖 Summer',
     'autumn'      => '🍂 Autumn',
     'winter'      => '❄️ Winter',
+    // Holidays
+    'memorial'    => '🇺🇸 Memorial Day',
     'thanksgiving'=> '🦃 Thanksgiving',
     'july4'       => '🎆 July 4th',
     'christmas'   => '✝️ Christmas',
-    'amiga'       => '🖥 Amiga Workbench',
-    'nextstep'    => '⬛ NeXTSTEP',
-    'beos'        => '🟡 BeOS',
-    'norton'      => '💙 DOS / Norton Commander',
-    'atarist'     => '🕹 Atari ST / TOS',
-    'irix'        => '🌊 IRIX / SGI',
+    // Era & Style
+    'retro80'     => '📺 80s TV',
+    'retro90'     => '📼 90s Music',
     'miku'        => '🎵 Hatsune Miku',
+    'professional'=> '👔 Professional',
+    'cute'        => '🌸 Cute',
+    'tech80'      => '📼 80s Technology',
+    'tech90'      => '💿 90s Technology',
+    'tech00'      => '🎵 2000s Technology',
+    'pager'       => '📟 Pager',
+    'ipad'        => '📱 iPad',
+    'intel'       => '🔷 Intel',
+    'amd'         => '🔴 AMD',
+    'ibm'         => '🖥 IBM POWER',
+    'powerpc'     => '🟢 PowerPC',
+    'via'         => '🟡 VIA',
+    'arm'         => '🟣 ARM',
+    'm-jan'        => '🥶 January',
+    'm-feb'        => '💖 February',
+    'm-mar'        => '🌬️ March',
+    'm-apr'        => '🌷 April',
+    'm-may'        => '🐝 May',
+    'm-jun'        => '✨ June',
+    'm-jul'        => '🏖️ July',
+    'm-aug'        => '🌾 August',
+    'm-sep'        => '🍂 September',
+    'm-oct'        => '🎃 October',
+    'm-nov'        => '🦅 November',
+    'm-dec'        => '❄️ December',
+    'mus80'       => '🎹 80s Music',
+    'tv90'        => '📺 90s TV',
+    'tv00'        => '📀 2000s TV',
+    'mus00'       => '💿 2000s Music',
+    'tv10'        => '📺 2010s TV',
+    'mus10'       => '🎧 2010s Music',
+    'tech10'      => '📲 2010s Technology',
+    'tech20'      => '🧠 2020s Technology',
     'custom'      => '🎨 Custom Theme',
 ];
 
@@ -1530,7 +1598,16 @@ select option{background:#1a1a2e;color:#fff;}
 .btn-danger{background:rgba(255,60,60,0.3);color:#ff8080;border:1px solid rgba(255,60,60,0.3);}
 .btn-secondary{background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.15);}
 .btn-sm{padding:5px 12px;font-size:12px;}
-.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.tabs{display:flex;gap:18px;margin-bottom:22px;flex-wrap:wrap;align-items:flex-start;}
+.tabgroup{display:flex;flex-direction:column;gap:6px;}
+.tabgroup-label{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.32);font-weight:700;padding-left:3px;}
+.tabgroup>.tab{display:inline-block;}
+.tabgroup{border-left:2px solid rgba(255,255,255,.07);padding-left:10px;}
+.tabgroup-inner{display:flex;gap:7px;flex-wrap:wrap;}
+.wpick{display:inline-block;padding:9px 15px;border-radius:9px;background:rgba(120,170,255,.10);border:1px solid rgba(120,170,255,.26);color:rgba(226,238,252,.92);font-size:13px;text-decoration:none;transition:all .15s ease;white-space:nowrap;}
+.wpick:hover{background:rgba(120,170,255,.24);border-color:rgba(150,200,255,.55);transform:translateY(-1px);}
+.tab-content .section[id^="w-"]{scroll-margin-top:20px;}
+.tab-intro{font-size:12.5px;line-height:1.55;color:rgba(255,255,255,.50);margin:0 0 18px;max-width:760px;border-left:3px solid rgba(120,170,255,.42);padding-left:12px;}
 .tab{padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);white-space:nowrap;}
 .tab.active{background:rgba(74,158,255,0.2);border-color:rgba(74,158,255,0.4);color:#4a9eff;}
 .tab-content{display:none;}
@@ -1575,35 +1652,58 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
 <?php endif; ?>
 
 <div class="tabs">
-  <div class="tab active"  onclick="showTab('general')">⚙️ General</div>
+  <div class="tabgroup">
+    <span class="tabgroup-label">Appearance</span>
+    <div class="tabgroup-inner">
+      <div class="tab active" onclick="showTab('general')">⚙️ General</div>
+      <div class="tab" onclick="showTab('themes')">🎨 Themes</div>
+      <div class="tab" onclick="showTab('customtheme')">🖌️ Custom Theme</div>
+    </div>
+  </div>
+  <div class="tabgroup">
+    <span class="tabgroup-label">Content</span>
+    <div class="tabgroup-inner">
+      <div class="tab" onclick="showTab('links')">🔗 Links</div>
+      <div class="tab" onclick="showTab('widgets')">🧩 Widgets</div>
+      <div class="tab" onclick="showTab('files')">📁 Files</div>
+    </div>
+  </div>
   <?php if ($_dash_is_admin): ?>
-  <div class="tab" onclick="showTab('drives')">💾 Drives</div>
+  <div class="tabgroup">
+    <span class="tabgroup-label">Server</span>
+    <div class="tabgroup-inner">
+      <div class="tab" onclick="showTab('drives')">💽 Drives</div>
+      <div class="tab" onclick="showTab('mysql')" id="tab-btn-mysql">🗄️ MySQL<?php if($_odb): ?> <span style="background:#0a5;color:#fff;border-radius:10px;padding:1px 5px;font-size:9px;margin-left:3px;">●</span><?php endif; ?></div>
+      <div class="tab" onclick="showTab('update')">⬆️ Update</div>
+    </div>
+  </div>
   <?php endif; ?>
-  <div class="tab" onclick="showTab('themes')">🎭 Themes</div>
-  <div class="tab" onclick="showTab('customtheme')">🎨 Custom Theme</div>
-  <div class="tab" onclick="showTab('links')">🔗 Links</div>
-  <div class="tab" onclick="showTab('widgets')">🧩 Widgets</div>
-  <?php if ($_dash_is_admin): ?>
-  <div class="tab" onclick="showTab('machines')">🖥 This Device</div>
-  <div class="tab" onclick="showTab('users')">👥 Users</div>
-  <?php endif; ?>
-  <div class="tab" onclick="showTab('password')">🔐 Password</div>
-  <div class="tab" onclick="showTab('export')">📤 Export</div>
-  <?php if ($_dash_is_admin): ?>
-  <div class="tab" onclick="showTab('update')">🔄 Update</div>
-  <?php endif; ?>
-  <div class="tab" onclick="showTab('changelog')">📋 Changelog</div>
-  <?php if ($_dash_is_admin): ?>
-  <div class="tab" onclick="showTab('mysql')" id="tab-btn-mysql">🗄 MySQL<?php if($_odb): ?> <span style="background:#0a5;color:#fff;border-radius:10px;padding:1px 5px;font-size:9px;margin-left:3px;">●</span><?php endif; ?></div>
-  <?php endif; ?>
-  <div class="tab" onclick="showTab('sharing')" id="tab-btn-sharing">🔗 Sharing<?php
-    $__pnd = count($_fs_inbox);
-    if ($_odb) { foreach ($_my_shares_in as $_si) if ($_si['status']==='pending') $__pnd++; }
-    if ($__pnd > 0): ?> <span style="background:#e04;color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px;"><?= $__pnd ?></span><?php endif; ?></div>
+  <div class="tabgroup">
+    <span class="tabgroup-label">Sharing</span>
+    <div class="tabgroup-inner">
+      <div class="tab" onclick="showTab('sharing')" id="tab-btn-sharing">🤝 Sharing<?php
+        $__pnd = count($_fs_inbox);
+        if ($_odb) { foreach ($_my_shares_in as $_si) if ($_si['status']==='pending') $__pnd++; }
+        if ($__pnd > 0): ?> <span style="background:#e04;color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px;"><?= $__pnd ?></span><?php endif; ?></div>
+      <div class="tab" onclick="showTab('export')">📦 Export / Import</div>
+    </div>
+  </div>
+  <div class="tabgroup">
+    <span class="tabgroup-label">Account</span>
+    <div class="tabgroup-inner">
+      <div class="tab" onclick="showTab('password')">🔑 Password</div>
+      <?php if ($_dash_is_admin): ?>
+      <div class="tab" onclick="showTab('users')">👥 Users</div>
+      <?php endif; ?>
+      <div class="tab" onclick="showTab('machines')">🖥️ This Device</div>
+      <div class="tab" onclick="showTab('changelog')">📋 Changelog</div>
+    </div>
+  </div>
 </div>
 
 <!-- ===== GENERAL ===== -->
 <div id="tab-general" class="tab-content active">
+  <p class="tab-intro">Dashboard-wide basics: the page title, which search engine the top bar uses, your site logo, and which system stat widgets (CPU, RAM, disks) appear.</p>
   <?php if ($_dash_is_admin): ?>
   <div class="section" style="margin-bottom:16px;">
     <h2>⚙️ General Settings</h2>
@@ -1679,6 +1779,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
 
 <!-- ===== DRIVES ===== -->
 <div id="tab-drives" class="tab-content">
+  <p class="tab-intro">Choose which disks and mount points the dashboard monitors. Each drive you add shows a live usage bar. Use Quick Test to confirm a path is readable before saving it.</p>
   <div class="section">
     <h2>💾 Drive Monitoring</h2>
     <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:16px;">These drives will appear as widgets in the dashboard header. Click <strong>Auto-detect</strong> to scan your server's drives, or add paths manually.</p>
@@ -1728,133 +1829,10 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
 </div>
 
 <!-- ===== BACKGROUNDS (moved to Themes tab — kept for legacy POST handlers only, not shown) ===== -->
-<div id="tab-backgrounds" class="tab-content" style="display:none!important;">
-  <div class="section">
-    <h2>🎬 Custom Backgrounds per Theme</h2>
-    <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:16px;">Add multiple named backgrounds per theme — video URLs, image URLs, animated web pages, or uploaded files. Each saved background shows up as a variant in the theme's variant dropdown on the dashboard.</p>
-    <?php
-    $presets = [
-        'macos'    => [['name'=>'🌊 Big Sur Walls','type'=>'video_url','url'=>'https://i.imgur.com/KJQNVJq.mp4']],
-        'ubuntu'   => [['name'=>'🔷 Yaru Wallpaper','type'=>'image_url','url'=>'https://assets.ubuntu.com/v1/9b8a55f5-focal-fossa.jpg']],
-        'christmas'=> [['name'=>'❄️ Winter Forest','type'=>'video_url','url'=>'https://assets.mixkit.co/videos/preview/mixkit-snowy-forest-at-christmas-4147-large.mp4']],
-        'july4'    => [['name'=>'🎆 Fireworks','type'=>'video_url','url'=>'https://assets.mixkit.co/videos/preview/mixkit-fireworks-in-the-city-at-new-year-2972-large.mp4']],
-    ];
-    foreach ($themes as $key => $label):
-        // Normalize to array of named entries
-        $entries = [];
-        if (!empty($bgs[$key])) {
-            $raw = $bgs[$key];
-            if (is_array($raw) && isset($raw[0])) {
-                $entries = $raw; // already array of named entries
-            } elseif (is_array($raw) && isset($raw['type'])) {
-                $entries = [['name'=>'Custom','type'=>$raw['type'],'url'=>$raw['url']]]; // legacy single object
-            }
-        }
-    ?>
-    <div class="theme-bg-card" id="bg-<?= $key ?>">
-      <h4><?= $label ?> <span style="font-size:11px;font-weight:normal;opacity:.4;">#<?= $key ?></span></h4>
-
-      <?php if (!empty($presets[$key])): ?>
-      <div style="margin-bottom:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;">
-        <span style="font-size:11px;color:rgba(255,255,255,.35);">Quick presets:</span>
-        <?php foreach($presets[$key] as $p): ?>
-        <button type="button" class="btn btn-sm" style="font-size:11px;padding:3px 9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:6px;"
-          onclick="setPresetBg('<?= $key ?>','<?= addslashes($p['type']) ?>','<?= addslashes($p['url']) ?>','<?= addslashes($p['name']) ?>')"><?= $p['name'] ?></button>
-        <?php endforeach; ?>
-      </div>
-      <?php endif; ?>
-
-      <?php if (!empty($entries)): ?>
-      <div style="margin-bottom:12px;">
-        <div style="font-size:11px;font-weight:bold;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Saved Backgrounds (<?= count($entries) ?>)</div>
-        <?php foreach ($entries as $i => $entry): ?>
-        <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,.05);border-radius:7px;margin-bottom:4px;font-size:12px;">
-          <span><?= $entry['type']==='video_url'||$entry['type']==='video_upload' ? '🎬' : ($entry['type']==='iframe_url' ? '🌐' : '🖼') ?></span>
-          <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="<?= htmlspecialchars($entry['url']??'') ?>">
-            <strong><?= htmlspecialchars($entry['name']??'Custom') ?></strong>
-            <span style="opacity:.45;margin-left:6px;"><?= htmlspecialchars(substr($entry['url']??'',0,50)) ?><?= strlen($entry['url']??'')>50?'…':'' ?></span>
-          </span>
-          <a href="<?= htmlspecialchars($entry['url']??'#') ?>" target="_blank" style="font-size:11px;opacity:.5;text-decoration:none;" title="Preview">▶</a>
-          <form method="POST" style="margin:0;">
-            <input type="hidden" name="action" value="delete_named_bg">
-            <input type="hidden" name="theme" value="<?= $key ?>">
-            <input type="hidden" name="bg_index" value="<?= $i ?>">
-            <button type="submit" class="btn btn-danger btn-sm" style="padding:2px 7px;font-size:11px;" title="Delete this background">🗑</button>
-          </form>
-        </div>
-        <?php endforeach; ?>
-      </div>
-      <?php else: ?>
-      <div style="font-size:12px;color:rgba(255,255,255,.25);margin-bottom:10px;padding:8px;background:rgba(255,255,255,.03);border-radius:6px;border:1px dashed rgba(255,255,255,.1);">No custom backgrounds yet. Add one below.</div>
-      <?php endif; ?>
-
-      <details style="margin-bottom:8px;">
-        <summary style="cursor:pointer;font-size:12px;color:rgba(255,255,255,.6);padding:4px 0;user-select:none;">➕ Add Background by URL</summary>
-        <form method="POST" style="margin-top:8px;" id="bg-form-<?= $key ?>">
-          <input type="hidden" name="action" value="save_bg">
-          <input type="hidden" name="theme"  value="<?= $key ?>">
-          <div class="row2">
-            <div>
-              <label style="margin-top:0;">Name</label>
-              <input type="text" name="bg_name" placeholder="e.g. Sunset Video" style="width:100%;padding:5px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:#fff;font-size:13px;">
-            </div>
-            <div>
-              <label style="margin-top:0;">Type</label>
-              <select name="bg_type" id="bg-type-<?= $key ?>" onchange="bgTypeChange(this)">
-                <option value="video_url">🎬 Video URL (.mp4/.webm)</option>
-                <option value="image_url">🖼 Image URL (.jpg/.png)</option>
-                <option value="iframe_url">🌐 Web Page / Animated CSS (iframe)</option>
-              </select>
-            </div>
-            <div>
-              <label style="margin-top:0;">URL</label>
-              <input type="url" class="url-input" id="bg-url-<?= $key ?>" name="url" placeholder="https://...">
-            </div>
-            <div class="fit-row" style="display:none;align-items:center;gap:8px;padding:4px 0;flex-wrap:wrap;">
-              <label style="font-size:12px;color:rgba(255,255,255,.6);white-space:nowrap;margin:0;">Image fit:</label>
-              <select name="bg_fit" style="background:#1a1a2e;color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:4px 9px;font-size:12px;">
-                <option value="fill">🖼 Fill (cover, no distortion)</option>
-                <option value="stretch">↔ Stretch (distort to exact size)</option>
-                <option value="center">⊙ Center (natural size, centered)</option>
-                <option value="tile">🪟 Tile (repeat like wallpaper)</option>
-              </select>
-            </div>
-            <button type="submit" class="btn btn-primary btn-sm" style="margin-top:auto;">➕ Add</button>
-          </div>
-        </form>
-      </details>
-
-      <details>
-        <summary style="cursor:pointer;font-size:12px;color:rgba(255,255,255,.6);padding:4px 0;user-select:none;">📁 Upload File (Video/Image)</summary>
-        <form method="POST" enctype="multipart/form-data" style="margin-top:8px;">
-          <input type="hidden" name="action" value="upload_bg">
-          <input type="hidden" name="theme"  value="<?= $key ?>">
-          <div class="row2" style="align-items:center;">
-            <input type="text" name="bg_name" placeholder="Background name (optional)" style="padding:5px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:#fff;font-size:13px;">
-            <select name="upload_type" onchange="uploadTypeChange(this)" style="max-width:140px;">
-              <option value="video">🎬 Upload Video</option>
-              <option value="image">🖼 Upload Image</option>
-            </select>
-            <div class="fit-row" style="display:none;align-items:center;gap:8px;padding:2px 0;flex-wrap:wrap;">
-              <label style="font-size:12px;color:rgba(255,255,255,.6);white-space:nowrap;margin:0;">Image fit:</label>
-              <select name="bg_fit" style="background:#1a1a2e;color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:4px 9px;font-size:12px;">
-                <option value="fill">🖼 Fill (cover, no distortion)</option>
-                <option value="stretch">↔ Stretch (distort to exact size)</option>
-                <option value="center">⊙ Center (natural size, centered)</option>
-                <option value="tile">🪟 Tile (repeat like wallpaper)</option>
-              </select>
-            </div>
-            <label class="upload-label">📁 Choose File
-              <input type="file" name="file" accept="video/*,image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="this.form.submit()">
-            </label>
-          </div>
-        </form>
-      </details>
-    </div>
-    <?php endforeach; ?>
-  </div>
-
-  <div class="section">
+<!-- ===== FILES ===== -->
+<div id="tab-files" class="tab-content">
+  <p class="tab-intro">Folders and uploads that appear in the Documents panel on your dashboard. Create folders here, choose what file types each one shows, and review everything you have uploaded.</p>
+<div class="section">
     <h2>🗂 Document Folders</h2>
     <p style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px;">Manage folders shown in the Documents panel on your dashboard.</p>
     <?php
@@ -1990,14 +1968,33 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
   </div>
 </div>
 
-<!-- ===== THEMES VISIBILITY ===== -->
 <div id="tab-themes" class="tab-content">
+  <p class="tab-intro">Show or hide themes in the dashboard dropdown, and click Edit on any theme to add your own background images or videos to it.</p>
   <div class="section">
     <h2>🎭 Theme Visibility</h2>
     <p style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:16px;">Hidden themes are removed from the theme dropdown on the dashboard. You can still unhide them here anytime.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;">
-      <?php foreach ($themes as $key => $label):
-        if (in_array($key, $theme_variants_only)) continue;
+      <?php
+      // Render grouped: emit a full-width header before each group's tiles.
+      $_renderOrder = [];
+      foreach ($theme_group_map as $_gName => $_gKeys) {
+          $_gVisible = [];
+          foreach ($_gKeys as $_gk) {
+              if (isset($themes[$_gk]) && !in_array($_gk, $theme_variants_only)) $_gVisible[$_gk] = $themes[$_gk];
+          }
+          if ($_gVisible) $_renderOrder[$_gName] = $_gVisible;
+      }
+      // Any theme not covered by the map falls into "Other".
+      $_mapped = array_merge(...array_values(array_map('array_keys', $_renderOrder ?: [[]])));
+      $_other = [];
+      foreach ($themes as $_k => $_v) {
+          if (!in_array($_k, $_mapped) && !in_array($_k, $theme_variants_only)) $_other[$_k] = $_v;
+      }
+      if ($_other) $_renderOrder['Other'] = $_other;
+      ?>
+      <?php foreach ($_renderOrder as $_groupName => $_groupThemes): ?>
+      <div style="grid-column:1/-1;margin:14px 0 2px;font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:5px;"><?= htmlspecialchars($_groupName) ?></div>
+      <?php foreach ($_groupThemes as $key => $label):
         $hidden = in_array($key, $hidden_themes);
         $hasBg  = !empty($bgs[$key]);
       ?>
@@ -2020,6 +2017,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
         <?php endif; ?>
       </div>
       <?php endforeach; ?>
+      <?php endforeach; ?>
     </div>
 
     <!-- Inline theme background editor panel -->
@@ -2035,6 +2033,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
 
 <!-- ===== CUSTOM THEME ===== -->
 <div id="tab-customtheme" class="tab-content">
+  <p class="tab-intro">Build your own colour scheme from scratch — card colours, borders, text, hover states and font. It appears as the "Custom" theme in the dropdown.</p>
   <div class="section">
     <h2>🎨 Custom Theme Creator</h2>
     <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:16px;">Design your own theme. These CSS variables will be applied when you select "🎨 Custom Theme" from the theme menu. Changes are saved server-side and also synced to localStorage.</p>
@@ -2113,6 +2112,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
 
 <!-- ===== LINKS ===== -->
 <div id="tab-links" class="tab-content">
+  <p class="tab-intro">Everything about your link columns: create them, restore defaults, import Chrome bookmarks, back them up, and edit individual links.</p>
 
   <!-- AUTO-BACKUP RESTORE -->
   <div class="section" style="margin-bottom:16px;border:1px solid rgba(255,165,0,.35);background:rgba(255,140,0,.07);">
@@ -2344,6 +2344,24 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
 
 <!-- ===== WIDGETS ===== -->
 <div id="tab-widgets" class="tab-content">
+  <p class="tab-intro">Add and manage the floating widgets on your dashboard — clocks, countdowns, weather, cameras, calendars, RSS feeds, sticky notes and custom HTML. Pick a type below to add one.</p>
+  <div class="section" style="margin-bottom:18px;">
+    <h2>➕ Add a Widget</h2>
+    <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px;">
+      Pick a type to jump to its setup form. Widgets float on your dashboard and can be dragged, resized and hidden individually.
+    </p>
+    <div style="display:flex;gap:9px;flex-wrap:wrap;">
+      <a href="#w-countdown" class="wpick">⏳ Countdown</a>
+      <a href="#w-clock" class="wpick">🕐 World Clock</a>
+      <a href="#w-weather" class="wpick">🌤️ Weather</a>
+      <a href="#w-calendar" class="wpick">📅 Calendar</a>
+      <a href="#w-rss" class="wpick">📰 RSS Feed</a>
+      <a href="#w-camera" class="wpick">📷 Camera</a>
+      <a href="#w-notes" class="wpick">📝 Sticky Note</a>
+      <a href="#w-html" class="wpick">🧱 Custom HTML</a>
+    </div>
+  </div>
+
 
   <!-- Widget visibility toggles -->
   <div class="section" style="margin-bottom:16px;">
@@ -2466,7 +2484,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
   <?php endif; ?>
 
   <!-- ===== Countdown Timer Widgets ===== -->
-  <div class="section" style="margin-bottom:16px;">
+  <div class="section" style="margin-bottom:16px;" id="w-countdown">
     <h2>⏳ Add Countdown Timer</h2>
     <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px;">
       Add a live countdown to any date — vacations, deadlines, birthdays, launches. Appears as a floating draggable widget.
@@ -2503,7 +2521,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
   <?php endif; ?>
 
   <!-- ===== Sticky Notes ===== -->
-  <div class="section" style="margin-bottom:16px;">
+  <div class="section" style="margin-bottom:16px;" id="w-notes">
     <h2>📌 Sticky Notes</h2>
     <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px;">
       Add draggable, resizable sticky notes to your dashboard. Notes auto-save as you type and persist across sessions.
@@ -2520,7 +2538,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
   </div>
 
   <!-- Custom HTML Widgets -->
-  <div class="section" style="margin-bottom:16px;">
+  <div class="section" style="margin-bottom:16px;" id="w-html">
     <h2>🧩 Add Custom HTML Widget</h2>
     <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px;">
       Paste any HTML embed code (from <a href="https://elfsight.com/" target="_blank" style="color:#4a9eff;">Elfsight</a>, Widgetbot, Google Maps, stock tickers, etc.) and give it a name.
@@ -2543,7 +2561,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
   </div>
 
   <!-- RSS Feed Widgets -->
-  <div class="section" style="margin-bottom:16px;">
+  <div class="section" style="margin-bottom:16px;" id="w-rss">
     <h2>📰 Add RSS Feed Widget</h2>
     <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px;">
       Enter any RSS or Atom feed URL. A scrollable news-feed widget will appear on the dashboard.
@@ -2617,7 +2635,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
   <?php endif; ?>
 
   <!-- ===== CAMERA WIDGET ===== -->
-  <div class="section" style="margin-bottom:16px;">
+  <div class="section" style="margin-bottom:16px;" id="w-camera">
     <h2>📷 Add Camera Widget</h2>
     <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px;">
       Embed an IP camera stream (MJPEG, HLS, or an NVR iframe like Scrypted/Frigate/BlueIris) as a draggable widget.
@@ -2664,7 +2682,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
   <?php endif; ?>
 
   <!-- ===== GOOGLE CALENDAR WIDGET ===== -->
-  <div class="section" style="margin-bottom:16px;">
+  <div class="section" style="margin-bottom:16px;" id="w-calendar">
     <h2>📅 Add Google Calendar Widget</h2>
 
     <div style="background:rgba(60,120,255,.1);border:1px solid rgba(100,160,255,.25);border-radius:8px;padding:14px;margin-bottom:18px;">
@@ -2763,7 +2781,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
   <?php endif; ?>
 
   <!-- ===== EXTRA WEATHER CITY WIDGETS ===== -->
-  <div class="section" style="margin-bottom:16px;">
+  <div class="section" style="margin-bottom:16px;" id="w-weather">
     <h2>🌤 Add City Weather Widget</h2>
     <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px;">
       Add a draggable weather panel for any city or ZIP code. Each widget auto-refreshes every 30 minutes. Uses <a href="https://wttr.in" target="_blank" style="color:#7ab4ff;">wttr.in</a> — no API key needed.
@@ -2805,7 +2823,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
   <?php endif; ?>
 
   <!-- ===== TIMEZONE WIDGETS ===== -->
-  <div class="section" style="margin-bottom:16px;">
+  <div class="section" style="margin-bottom:16px;" id="w-clock">
     <h2>🕐 Add World Clock Widget</h2>
     <p style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px;">
       Add a digital clock for any timezone — great for monitoring remote servers or team members in other countries.
@@ -2900,6 +2918,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
 
 <!-- ===== PASSWORD ===== -->
 <div id="tab-password" class="tab-content">
+  <p class="tab-intro">Change the password for the account you are signed in as.</p>
   <div class="section">
     <h2>🔐 Change Password</h2>
     <form method="POST">
@@ -2916,6 +2935,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
 
 <!-- ===== USERS ===== -->
 <div id="tab-users" class="tab-content">
+  <p class="tab-intro">Create additional accounts for other people. Editors can manage their own links; read-only users can view but not change. Each user gets their own links and uploads.</p>
   <div class="section">
     <h2>👥 User Management</h2>
     <p style="font-size:12px;color:rgba(255,255,255,.55);margin-bottom:14px;">
@@ -3025,6 +3045,7 @@ code{color:#4a9eff;font-size:11px;background:rgba(74,158,255,0.1);padding:2px 6p
 
 <!-- ===== MySQL ADMIN ===== -->
 <div id="tab-mysql" class="tab-content">
+  <p class="tab-intro">Optional. The dashboard works from JSON files by default; connecting MySQL or MariaDB makes it faster and lets settings sync across devices. You can also see per-user storage here.</p>
 <?php
 $_dbConnected = ($_odb !== null);
 $_dbCfgExists = defined('DASH_DB_TYPE') && constant('DASH_DB_TYPE') === 'mysql';
@@ -3162,6 +3183,7 @@ $_dbUser = defined('DASH_DB_USER') ? constant('DASH_DB_USER') : '';
 
 <!-- ===== MACHINES / DEVICE REGISTRATION ===== -->
 <div id="tab-machines" class="tab-content">
+  <p class="tab-intro">Every browser that signs in gets a device ID so it can remember its own theme, layout and zoom. Rename or remove devices you no longer use.</p>
   <div class="section">
     <h2>🖥 Device Registration</h2>
     <div style="background:rgba(80,180,255,.08);border:1px solid rgba(80,180,255,.2);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13px;">
@@ -3232,6 +3254,7 @@ $_dbUser = defined('DASH_DB_USER') ? constant('DASH_DB_USER') : '';
 
 <!-- ===== EXPORT ===== -->
 <div id="tab-export" class="tab-content">
+  <p class="tab-intro">Back up and move things between installs: export a theme with its backgrounds, share a single column or widget, or export every setting you have.</p>
 
   <!-- Theme ZIP Export -->
   <div class="section" style="margin-bottom:16px;">
@@ -3436,6 +3459,7 @@ function doShareExport(){
 
 <!-- ===== UPDATE ===== -->
 <div id="tab-update" class="tab-content">
+  <p class="tab-intro">Check for a new version, upload an update ZIP, or restore from a backup. Your config, links, users and uploads are never overwritten by an update.</p>
   <div class="section" style="margin-bottom:16px;">
     <h2>🔄 Dashboard Updates</h2>
 
@@ -3447,12 +3471,12 @@ function doShareExport(){
         <div style="flex:1;min-width:260px;">
           <label style="font-size:12px;opacity:.6;display:block;margin-bottom:4px;">version.json URL</label>
           <input type="url" name="update_url" value="<?= htmlspecialchars($_update_url) ?>"
-                 placeholder="https://dash.danielholmstock.com/updateusers/version.json"
+                 placeholder="https://example.com/dashboard/version.json"
                  style="width:100%;">
         </div>
         <button type="submit" class="btn btn-primary btn-sm">💾 Save URL</button>
       </form>
-      <div style="font-size:11px;opacity:.45;margin-top:6px;">Leave blank to use the default: <code>https://dash.danielholmstock.com/updateusers/version.json</code></div>
+      <div style="font-size:11px;opacity:.45;margin-top:6px;">Point this at a <code>version.json</code> you host, or leave blank to disable update checks.</div>
     </div>
 
     <!-- Check for Updates -->
@@ -3531,6 +3555,7 @@ $_share_resources = [
 ?>
 <!-- ===== CHANGELOG ===== -->
 <div id="tab-changelog" class="tab-content">
+  <p class="tab-intro">What changed in each release of the dashboard.</p>
   <div class="section">
     <h2>📋 Changelog</h2>
     <div style="max-width:700px;">
@@ -3626,6 +3651,7 @@ $_share_resources = [
 
 <!-- ===== SHARING ===== -->
 <div id="tab-sharing" class="tab-content">
+  <p class="tab-intro">Send a link column or widget to another user on this dashboard, and accept or decline things others have sent you.</p>
 
 <?php
 // Build the current user's shareable columns list
